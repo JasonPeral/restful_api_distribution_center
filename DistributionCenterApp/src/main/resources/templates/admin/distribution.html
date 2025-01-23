@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Distribution Center</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+  <h1 class="mb-4">Admin Distribution Center</h1>
+
+  <!-- Request Item Form section here -->
+
+  <form th:action="@{/admin/requestItem}" method="post">
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="brand">Brand:</label>
+        <select id="brand" name="brand" class="form-control" required>
+          <option th:each="brand : ${T(com.finalProject.DistributionCenterApp.models.Item$Brand).values()}"
+                  th:value="${brand}" th:text="${brand}"></option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" class="form-control" required>
+      </div>
+      <div class="form-group col-md-4">
+        <button type="submit" class="btn btn-primary mt-4">Submit</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Distribution Centers section ova here -->
+  <h2 class="mt-4">Distribution Centers:</h2>
+  <ul class="list-group">
+    <li th:each="center : ${distributionCenters}" class="list-group-item">
+      <span th:text="${center.name}"></span>
+      <span class="ml-2">(Latitude: <span th:text="${center.latitude}"></span>, Longitude: <span th:text="${center.longitude}"></span>)</span>
+    </li>
+  </ul>
+
+  <!-- All items section at the bottom  -->
+  <h2 class="mt-4">All Items:</h2>
+  <table class="table">
+    <tbody>
+    <tr th:each="item : ${allItems}" class="list-group-item">
+      <td class="text-left" th:text="${item.id}"></td>
+      <td class="text-left" th:text="${item.name}"></td>
+      <td class="text-left" th:text="${item.brand}"></td>
+      <td class="text-left" th:text="${item.quantity}"></td>
+      <td class="text-left">
+        <ul>
+          <li th:each="dc : ${item.distributionCenter}">
+            <span th:text="${dc.name}"></span>
+          </li>
+        </ul>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="card mt-4">
+    <div class="card-body">
+      <h5 class="card-title">Warehouse Items</h5>
+      <table class="table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Brand</th>
+          <th>Stock</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="warehouseItem : ${warehouseItems}">
+          <td th:text="${warehouseItem.item.id}"></td>
+          <td th:text="${warehouseItem.item.name}"></td>
+          <td th:text="${warehouseItem.item.brand}"></td>
+          <td th:text="${warehouseItem.stock}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>
